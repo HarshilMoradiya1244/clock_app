@@ -8,7 +8,8 @@ class first_page extends StatefulWidget {
 }
 
 class _first_pageState extends State<first_page> {
-  int hour=0,minute=0,second=0;
+  int hour = 0, minutes = 0, second = 0, day = 0, month = 0, year = 0,week=0;
+
   @override
   void initState() {
     super.initState();
@@ -18,69 +19,71 @@ class _first_pageState extends State<first_page> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
         appBar: AppBar(
-          title: Text("ui"),
           centerTitle: true,
-          backgroundColor: Colors.greenAccent,
+          title: Text("Clock"),
+          backgroundColor: Colors.deepOrangeAccent,
         ),
+        backgroundColor: Colors.black,
         body: Center(
           child: Stack(
             alignment: Alignment.center,
             children: [
               SizedBox(
-                height: 200,
-                width: 200,
-                child: Container(
-                  height: 150,
-                  width: 150,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
+                height: MediaQuery.of(context).size.width * 0.60,
+                width: MediaQuery.of(context).size.width * 0.60,
+                child: CircularProgressIndicator(
+                  value: hour / 12,
+                  strokeWidth: 10,
+                  color: Colors.deepOrange,
                 ),
               ),
               SizedBox(
-                height: 193,
-                width: 193,
-                child: Container(
-                  height: 150,
-                  width: 150,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
+                height: MediaQuery.of(context).size.width * 0.55,
+                width: MediaQuery.of(context).size.width * 0.55,
+                child: CircularProgressIndicator(
+                  value: minutes / 60,
+                  strokeWidth: 10,
+                  color: Colors.white,
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Sunday",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25),
-                  ),
-                  Text("31 / 08 / 2023",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  ),
-                  SizedBox(height: 10),
-                  Text("$hour : $minute : $second",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25),
-                  ),
-                  SizedBox(height: 10),
-                  Text("PM    33",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25),
-                  ),
-                ],
-              )
+              SizedBox(
+                height: MediaQuery.of(context).size.width * 0.50,
+                width: MediaQuery.of(context).size.width * 0.50,
+                child: CircularProgressIndicator(
+                  value: second / 60,
+                  strokeWidth: 10,
+                  color: Colors.green,
+                ),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "$week",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      '$day - $month - $year',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "$hour - $minutes - $second",
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueAccent),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -88,21 +91,23 @@ class _first_pageState extends State<first_page> {
     );
   }
 
-  void digitalclock()
-  {
-    Future.delayed(Duration(seconds:1),(){
+  void digitalclock() {
+    Future.delayed(Duration(seconds: 1), () {
       setState(() {
-        hour=DateTime.now().hour;
-        minute=DateTime.now().minute;
-        second=DateTime.now().second;
-        digitalclock();
+        hour = DateTime.now().hour;
+        minutes = DateTime.now().minute;
+        second = DateTime.now().second;
+        week = DateTime.now().weekday;
+        day = DateTime.now().day;
+        month = DateTime.now().month;
+        year = DateTime.now().year;
+
+        if (hour > 12) {
+          hour = hour - 12;
+        }
       });
-    },
-    );
-    if(hour>12)
-    {
-      hour=hour-12;
-    }
+      digitalclock();
+    });
   }
 }
 

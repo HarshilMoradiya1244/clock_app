@@ -8,7 +8,7 @@ void main ()
     MaterialApp(
       theme: ThemeData(useMaterial3: true),
       debugShowCheckedModeBanner: false,
-      home: watch(),
+      home:first_page(),
     ),
   );
 }
